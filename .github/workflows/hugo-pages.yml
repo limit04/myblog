@@ -1,4 +1,4 @@
-name: Deploy Hugo site to Pages
+name: GitHub Pages
 
 on:
   push:
@@ -14,39 +14,30 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: '0.148.1'
-      DART_SASS_VERSION: '1.89.2'
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
-      - name: Install Hugo
-        run: |
-          wget -O hugo.deb https://github.com/gohugoio/hugo/releases/download/v${{ env.HUGO_VERSION }}/hugo_extended_${{ env.HUGO_VERSION }}_linux-amd64.deb
-          sudo dpkg -i hugo.deb
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.148.1"
+          extended: true
+
       - name: Install Dart Sass
         run: |
-          wget -O sass.tar.gz https://github.com/sass/dart-sass/releases/download/${{ env.DART_SASS_VERSION }}/dart-sass-${{ env.DART_SASS_VERSION }}-linux-x64.tar.gz
+          wget -qO sass.tar.gz https://github.com/sass/dart-sass/releases/download/1.89.2/dart-sass-1.89.2-linux-x64.tar.gz
           tar -xf sass.tar.gz
           sudo mv dart-sass /usr/local/bin/
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-      - name: Build with Hugo
-        run: hugo --gc --minify
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.pages.outputs.page_url }}
-    steps:
-      - name: Deploy to Pages
-        uses: actions/deploy-pages@v4
+      - name: Build site
+        run: hugo --gc --minify
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
