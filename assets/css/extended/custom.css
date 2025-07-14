@@ -1,0 +1,13 @@
+/* Change the blog background color */
+:root {
+  --theme: #f0e8de;
+  --entry: #f0e8de;
+  --content: #000; /* ensure text is still readable */
+}
+
+/* For dark mode, adjust background if needed */
+body.dark {
+  --theme: #000;
+  --entry: #000;
+  --content: #fff;
+}

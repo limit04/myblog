@@ -1,0 +1,38 @@
+baseURL: "https://limit04.github.io/myblog/"
+languageCode: "en-us"
+title: "limit writes"
+theme: ["PaperMod"]
+pagination:
+  pagerSize: 5
+
+params:
+  env: production
+  title: "limit writes"
+  description: "Brainstorm, write, and share easily"
+  author: "limit04"
+  defaultTheme: light
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowCodeCopyButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowToc: true
+
+  homeInfoParams:
+    Title: "Welcome!"
+    Content: "This is where I write about my thoughts."
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/limit04"
+
+menu:
+  main:
+    - identifier: home
+      name: Home
+      url: /
+      weight: 1
+    - identifier: posts
+      name: Posts
+      url: /posts/
+      weight: 2
